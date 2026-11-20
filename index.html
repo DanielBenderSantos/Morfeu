@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0d1b">
+    <title>Morfeu - Diário de Sonhos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="container">
+    <header class="header">
+        <button id="dashboardBtn" class="brand brand-button" type="button" aria-label="Abrir dashboard">
+            <span class="moon">☾</span>
+            <span class="brand-copy">
+                <strong>Morfeu</strong>
+                <small>Seu universo depois de fechar os olhos.</small>
+            </span>
+        </button>
+        <div class="header-actions">
+            <button id="settingsBtn" class="secondary-btn" type="button">⚙ Configurações</button>
+            <button id="addDreamBtn" class="primary-btn" type="button">+ Adicionar Sonho</button>
+        </div>
+    </header>
+
+    <section id="homeScreen">
+        <div class="section-header">
+            <div>
+                <span class="eyebrow">DIÁRIO PESSOAL</span>
+                <h2>Suas noites em palavras.</h2>
+                <p>Guarde os fragmentos dos seus sonhos.</p>
+            </div>
+            <span id="dreamCount">0 sonhos</span>
+        </div>
+        <div id="dreamList" class="dream-list"></div>
+        <nav id="pagination" class="pagination hidden" aria-label="Paginação dos sonhos">
+            <button id="prevPage" class="page-btn" type="button">← Anterior</button>
+            <span id="pageInfo" aria-live="polite"></span>
+            <button id="nextPage" class="page-btn" type="button">Próxima →</button>
+        </nav>
+    </section>
+
+    <section id="dashboardScreen" class="hidden">
+        <button id="dashboardBackBtn" class="back-btn">← Voltar ao diário</button>
+        <div class="section-header dashboard-heading">
+            <div>
+                <span class="eyebrow">VISÃO GERAL</span>
+                <h2>Seu universo interior.</h2>
+                <p>Um pequeno panorama das suas noites registradas.</p>
+            </div>
+            <span id="dashboardMonth" class="month-label"></span>
+        </div>
+        <div class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-label">Sonhos neste mês</span>
+                <strong id="monthlyDreams" class="stat-value">0</strong>
+                <small>Registros no mês atual</small>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Média de sonhos por mês</span>
+                <strong id="monthlyAverage" class="stat-value">0</strong>
+                <small id="averageCaption">Considerando os meses com registros</small>
+            </article>
+            <article class="stat-card mood-stat">
+                <span class="stat-label">Humor predominante</span>
+                <strong id="averageMood" class="stat-value">—</strong>
+                <small id="moodCaption">Seu humor mais frequente nos sonhos</small>
+            </article>
+        </div>
+        <div class="dashboard-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">HUMORES</span>
+                    <h3>Como seus sonhos fazem você se sentir</h3>
+                </div>
+            </div>
+            <div id="moodBreakdown" class="mood-breakdown"></div>
+        </div>
+        <div class="dashboard-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">ATIVIDADE</span>
+                    <h3>Sonhos por mês</h3>
+                </div>
+            </div>
+            <div id="monthlyBreakdown" class="monthly-breakdown"></div>
+        </div>
+    </section>
+
+    <section id="settingsScreen" class="hidden">
+        <button id="settingsBackBtn" class="back-btn" type="button">← Voltar ao diário</button>
+
+        <div class="form-container settings-container">
+            <span class="eyebrow">PERSONALIZAÇÃO</span>
+            <h2>Configurações</h2>
+            <p class="settings-description">Gerencie seus dados e mantenha seus sonhos seguros.</p>
+
+            <div class="settings-section">
+                <h3>Backup dos sonhos</h3>
+                <p>Exporte seus sonhos para guardar uma cópia no seu computador ou em outro local seguro.</p>
+                <button id="exportDreamsBtn" class="primary-btn" type="button">↓ Exportar sonhos</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>Importar backup</h3>
+                <p>Selecione um arquivo JSON exportado pelo Morfeu.</p>
+
+                <label for="importFile" class="file-label">Selecionar arquivo JSON</label>
+                <input type="file" id="importFile" accept=".json,application/json">
+                <p id="selectedFileName" class="selected-file-name">Nenhum arquivo selecionado.</p>
+
+                <div class="form-group">
+                    <label for="importMode">Como deseja importar?</label>
+                    <select id="importMode">
+                        <option value="merge">Mesclar com sonhos atuais</option>
+                        <option value="replace">Substituir sonhos atuais</option>
+                    </select>
+                </div>
+
+                <button id="importDreamsBtn" class="primary-btn" type="button">↑ Importar sonhos</button>
+            </div>
+
+            <p id="backupStatus" class="backup-status" role="status" aria-live="polite"></p>
+        </div>
+    </section>
+
+    <section id="formScreen" class="hidden">
+        <button id="backBtn" class="back-btn">← Voltar</button>
+        <div class="form-container">
+            <span class="eyebrow">UM FRAGMENTO DA NOITE</span>
+            <h2 id="formTitle">Registrar sonho</h2>
+            <form id="dreamForm">
+                <div class="form-group">
+                    <label for="dreamDate">Data do sonho</label>
+                    <input type="date" id="dreamDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="dreamTitle">Título do sonho</label>
+                    <input type="text" id="dreamTitle" placeholder="Ex: Voando sobre a cidade" maxlength="90" required>
+                </div>
+                <div class="form-group">
+                    <label for="dreamDescription">Descrição do sonho</label>
+                    <textarea id="dreamDescription" placeholder="Conte tudo que conseguir lembrar..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Como você se sentiu?</label>
+                    <div class="mood-options">
+                        <button type="button" class="mood-option" data-mood="happy"><span>☀️</span><small>Feliz</small></button>
+                        <button type="button" class="mood-option" data-mood="neutral"><span>☁️</span><small>Neutro</small></button>
+                        <button type="button" class="mood-option" data-mood="surreal"><span>🪐</span><small>Surreal</small></button>
+                        <button type="button" class="mood-option" data-mood="sad"><span>🌧️</span><small>Triste</small></button>
+                        <button type="button" class="mood-option" data-mood="nightmare"><span>🌑</span><small>Pesadelo</small></button>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="secondary-btn">Cancelar</button>
+                    <button type="submit" class="primary-btn">Salvar Sonho</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<div id="deleteModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <div class="modal-content">
+        <h3 id="deleteTitle">Excluir sonho?</h3>
+        <p>Tem certeza que deseja deletar este sonho?</p>
+        <div class="modal-actions">
+            <button id="cancelDelete" class="secondary-btn">Cancelar</button>
+            <button id="confirmDelete" class="delete-btn">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
